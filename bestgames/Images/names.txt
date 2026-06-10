@@ -1,2 +1,0 @@
-icons:
-back = Back-Button.svg
