@@ -1,1 +1,254 @@
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WinnieGaming - Amazing Gaming Website</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            animation: slideDown 0.6s ease-out;
+        }
+        
+        header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .search-bar {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        #searchInput {
+            width: 100%;
+            max-width: 500px;
+            padding: 12px 20px;
+            font-size: 1em;
+            border: none;
+            border-radius: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            outline: none;
+            transition: transform 0.2s;
+        }
+        
+        #searchInput:focus {
+            transform: scale(1.02);
+        }
+        
+        .games-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .game-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+            animation: fadeIn 0.5s ease-out forwards;
+            opacity: 0;
+        }
+        
+        .game-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.3);
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .game-thumbnail {
+            width: 100%;
+            height: 150px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5em;
+            color: white;
+            overflow: hidden;
+        }
+        
+        .game-thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .game-info {
+            padding: 15px;
+        }
+        
+        .game-name {
+            font-size: 1em;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+            word-break: break-word;
+        }
+        
+        .game-button {
+            width: 100%;
+            padding: 10px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: opacity 0.2s;
+        }
+        
+        .game-button:hover {
+            opacity: 0.9;
+        }
+        
+        .game-card.hidden {
+            display: none;
+        }
+        
+        .no-results {
+            text-align: center;
+            color: white;
+            font-size: 1.2em;
+            grid-column: 1 / -1;
+            padding: 40px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>🎮 WinnieGaming</h1>
+        <p>An amazing gaming website for all ages</p>
+    </header>
+    
+    <div class="search-bar">
+        <input 
+            type="text" 
+            id="searchInput" 
+            placeholder="Search games..." 
+            autocomplete="off"
+        >
+    </div>
+    
+    <div class="games-container" id="gamesContainer"></div>
+    
+    <script>
+        // Games list from games.yml
+        const games = [
+            { id: 1, name: '99 Nights.html', displayName: '99 Nights', emoji: '🌃', image: 'Images/99 nights.jpg' },
+            { id: 2, name: 'Baldi.html', displayName: 'Baldi', emoji: '📚', image: null },
+            { id: 3, name: "Baldi's Basics 2.html", displayName: "Baldi's Basics 2", emoji: '📖', image: null },
+            { id: 4, name: '(OLD) celeste 2.html', displayName: 'Celeste 2 (OLD)', emoji: '🏔️', image: 'Images/Celeste 2 (old) .webp' },
+            { id: 5, name: 'chrome dino.html', displayName: 'Chrome Dino', emoji: '🦕', image: null },
+            { id: 6, name: 'INDEV MINECRAFT.html', displayName: 'INDEV Minecraft', emoji: '⛏️', image: null },
+            { id: 7, name: 'Paper IO.html', displayName: 'Paper IO', emoji: '📄', image: null },
+            { id: 8, name: 'Paper IO 3D edition.html', displayName: 'Paper IO 3D', emoji: '3️⃣', image: null },
+            { id: 9, name: 'Sonic EXE.html', displayName: 'Sonic EXE', emoji: '💨', image: null },
+            { id: 10, name: 'Super Mario 63.html', displayName: 'Super Mario 63', emoji: '🍄', image: null },
+            { id: 11, name: 'uno.html', displayName: 'Uno', emoji: '🃏', image: null }
+        ];
+        
+        const container = document.getElementById('gamesContainer');
+        const searchInput = document.getElementById('searchInput');
+        
+        // Render all games
+        function renderGames() {
+            container.innerHTML = games.map(game => `
+                <div class="game-card" data-name="${game.displayName.toLowerCase()}">
+                    <div class="game-thumbnail">
+                        ${game.image ? `<img src="${game.image}" alt="${game.displayName}">` : game.emoji}
+                    </div>
+                    <div class="game-info">
+                        <div class="game-name">${game.displayName}</div>
+                        <button class="game-button" onclick="playGame('${game.name}')">Play Now</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        // Search functionality
+        searchInput.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            const cards = document.querySelectorAll('.game-card');
+            let visibleCount = 0;
+            
+            cards.forEach(card => {
+                const gameName = card.dataset.name;
+                if (gameName.includes(searchTerm)) {
+                    card.classList.remove('hidden');
+                    visibleCount++;
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+            
+            if (visibleCount === 0 && searchTerm.length > 0) {
+                if (!document.querySelector('.no-results')) {
+                    const noResults = document.createElement('div');
+                    noResults.className = 'no-results';
+                    noResults.textContent = 'No games found. Try a different search!';
+                    container.appendChild(noResults);
+                }
+            } else {
+                const noResults = document.querySelector('.no-results');
+                if (noResults) noResults.remove();
+            }
+        });
+        
+        // Play game function
+        function playGame(gameName) {
+            window.open(`games/${gameName}`, '_blank');
+        }
+        
+        // Initialize
+        renderGames();
+    </script>
+</body>
+</html>
